@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis of Tweets</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #020202;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .container {
+            max-width: 700px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.347);
+            position: relative;
+            z-index: 1;
+        }
+        .container:after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(29, 160, 242, 0.71);
+            z-index: -1;
+        }
+        h1 {
+            font-size: 36px;
+            color: #1DA1F2;
+            text-align: center;
+            font-weight: bold;
+        }
+        .form-label {
+            font-size: 18px;
+            color: #333;
+        }
+        .form-control {
+            font-size: 16px;
+            height: 100px;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .btn-primary {
+            background-color: #1DA1F2;
+            border-color: #1DA1F2;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 8px;
+        }
+        .btn-primary:hover {
+            background-color: #0d8ccf;
+            border-color: #0d8ccf;
+        }
+        .form-check-label {
+            font-size: 16px;
+            color: #555;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+        }
+        .result.positive {
+            background-color: #28a745;
+            color: white;
+        }
+        .result.negative {
+            background-color: #dc3545;
+            color: white;
+        }
+        .result.neutral {
+            background-color: #ffc107;
+            color: white;
+        }
+        #analyzing {
+            display: none;
+            font-size: 16px;
+            text-align: center;
+            padding: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="bi bi-twitter"></i> Sentiment Analysis of Tweets</h1>
+    
+    <form action="/predict" method="POST" id="form">
+        <div class="mb-3">
+            <label for="text" class="form-label">Enter Text</label>
+            <textarea id="text" name="text" class="form-control" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Predict Sentiment</button>
+    </form>
+
+    <div id="analyzing">Analyzing...</div>
+
+    {% if prediction_text %}
+    <div id="result" class="result {{ 'neutral' if 'valid' in prediction_text.lower() else 'negative' }}">
+        {{ prediction_text }}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    const textArea = document.getElementById('text');
+    const analyzingMessage = document.getElementById('analyzing');
+    const resultDiv = document.getElementById('result');
+    const form = document.getElementById('form');
+
+    // Show "Analyzing..." when user starts typing
+    textArea.addEventListener('input', () => {
+        analyzingMessage.style.display = 'block';
+        if (resultDiv) {
+            resultDiv.style.display = 'none';  // Hide previous result
+        }
+    });
+
+    // When the result is displayed, hide input and form elements
+    if (resultDiv) {
+        resultDiv.addEventListener('click', () => {
+            analyzingMessage.style.display = 'none';
+            resultDiv.style.display = 'none';
+            textArea.style.display = 'block';
+            form.reset();  // Reset the form to allow for new input
+        });
+    }
+</script>
+
+</body>
+</html>
