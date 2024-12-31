@@ -3,6 +3,9 @@
 This project performs sentiment analysis on tweets using machine learning. The goal is to classify tweets as either positive or negative based on their content. It uses a Random Forest Classifier for classification, with a pre-trained model and TF-IDF vectorizer.
 ## LIVE DEMO 
 https://github.com/Nitikachoudhary66/Twitter-sentiment-analyses/blob/main/Sentiment%20Analysis%20of%20Tweets%20live.gif
+<img width="388" alt="image" src="https://github.com/user-attachments/assets/80348c5c-ca5c-4ad9-b3f2-970954830eda" />
+
+
 ## Project Structure
 
 The project directory contains the following files:
